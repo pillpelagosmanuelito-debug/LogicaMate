@@ -12,7 +12,7 @@ import com.educalab.logicamate.domain.model.PieceSpec
 /**
  * Banco de contenido semilla de LogicaMate: 135 desafíos generados por
  * tools/generate_seed_content.py y AUTO-VERIFICADOS uno a uno en Python
- * contra una réplica exacta de la lógica de domain/engine/*.kt antes de
+ * contra una réplica exacta de la lógica de los archivos .kt de domain/engine antes de
  * emitirse aquí (ver el propio script para el detalle de cada aserción).
  *
  * NO EDITAR A MANO: cualquier cambio debe hacerse en el generador y
