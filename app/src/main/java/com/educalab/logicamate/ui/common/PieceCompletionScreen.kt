@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,8 +49,8 @@ enum class CompletionLayout { ROW_MOSAIC, PASSAGE, MECHANISM, GRID_MURAL }
 fun PieceCompletionBoard(
     challenge: Challenge,
     layout: CompletionLayout,
-    onSubmit: (List<PieceSpec>) -> Unit,
     modifier: Modifier = Modifier,
+    onSubmit: (List<PieceSpec>) -> Unit,
 ) {
     var selectedForBlank by remember(challenge.id) { mutableStateOf<PieceSpec?>(null) }
     val blankCount = challenge.items.count { it.isBlank }
@@ -128,9 +129,13 @@ private fun AnalogyRow(challenge: Challenge, selected: PieceSpec?) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 val b = items.getOrNull(2)
                 val blank = items.getOrNull(3)
-                if (b != null) PieceView(b)
-                Text("→", style = MaterialTheme.typography.headlineMedium, color = RuneGold)
-                PieceView(if (selected != null) selected else (blank ?: PieceSpec.BLANK))
+                item {
+                    Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        if (b != null) PieceView(b)
+                        Text("→", style = MaterialTheme.typography.headlineMedium, color = RuneGold)
+                        PieceView(if (selected != null) selected else (blank ?: PieceSpec.BLANK))
+                    }
+                }
             }
         }
     }

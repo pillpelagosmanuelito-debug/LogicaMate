@@ -1,6 +1,7 @@
 package com.educalab.logicamate.ui.screens.classification
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -123,4 +124,4 @@ fun ClassificationBoard(challenge: Challenge, onSubmit: (List<List<Int>>) -> Uni
 }
 
 private fun Modifier.clickableIfSelected(enabled: Boolean, onClick: () -> Unit): Modifier =
-    if (enabled) this.then(androidx.compose.foundation.clickable(onClick = onClick)) else this
+    if (enabled) this.clickable(onClick = onClick) else this
