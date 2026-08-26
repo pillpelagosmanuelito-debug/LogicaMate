@@ -36,6 +36,12 @@ class ProgressRepositoryTest {
         db.close()
     }
 
+    private suspend fun completeChamber(chamberId: ChamberId) {
+        for (c in db.challengeDao().getByChamber(chamberId.name)) {
+            repo.recordAttempt(c.id, chamberId, DifficultyLevel.valueOf(c.difficulty), true, emptyList(), "x")
+        }
+    }
+
     @Test
     fun `a correct attempt awards positive xp`() = runBlocking {
         val challenge = db.challengeDao().getByChamber(ChamberId.PATTERNS.name).first()
@@ -72,6 +78,7 @@ class ProgressRepositoryTest {
 
     @Test
     fun `completing every challenge in a chamber marks it completed and unlocks the next one`() = runBlocking {
+        completeChamber(ChamberId.ENTRANCE)
         val challenges = db.challengeDao().getByChamber(ChamberId.PATTERNS.name)
         var lastStatus = ChamberStatus.AVAILABLE
         for (c in challenges) {
@@ -86,6 +93,7 @@ class ProgressRepositoryTest {
 
     @Test
     fun `completing a fragment-granting chamber unlocks its key fragment exactly once`() = runBlocking {
+        completeChamber(ChamberId.ENTRANCE)
         val challenges = db.challengeDao().getByChamber(ChamberId.PATTERNS.name)
         var fragmentUnlockedCount = 0
         for (c in challenges) {
