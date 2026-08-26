@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Compose owns all theming (ui/theme/Theme.kt). This base theme only
+         controls the pre-Compose window background to avoid a white flash. -->
+    <style name="Theme.LogicaMate" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/temple_background</item>
+        <item name="android:statusBarColor">@color/temple_stone_dark</item>
+        <item name="android:navigationBarColor">@color/temple_stone_dark</item>
+    </style>
+</resources>

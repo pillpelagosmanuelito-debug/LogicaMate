@@ -1,0 +1,7 @@
+<resources>
+    <!-- Paleta "Templo de los Patrones": piedra, oro runico, cristal turquesa. -->
+    <color name="temple_background">#1B1330</color>
+    <color name="temple_stone_dark">#120C22</color>
+    <color name="temple_gold">#F2B705</color>
+    <color name="temple_crystal">#3ADBC6</color>
+</resources>

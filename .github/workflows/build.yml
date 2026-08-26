@@ -1,0 +1,75 @@
+name: Build LogicaMate
+
+# Se dispara al hacer push (no se ha hecho ningún push todavía desde el
+# entorno de generación — ver docs/BUILD_REPORT.md). No depende de
+# gradle/wrapper/gradle-wrapper.jar (ausente en este ZIP, ver el mismo
+# reporte): usa gradle/actions/setup-gradle para provisionar Gradle 8.7
+# directamente en el runner y lo invoca como `gradle`, no `./gradlew`.
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.7'
+
+      - name: Regenerate Gradle wrapper (for local dev parity)
+        run: gradle wrapper --gradle-version 8.7
+
+      - name: Clean
+        run: gradle clean
+
+      - name: Unit tests (134 JVM tests, incl. Robolectric)
+        run: gradle testDebugUnitTest
+
+      - name: Upload unit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: app/build/reports/tests/testDebugUnitTest/
+
+      - name: Lint
+        run: gradle lintDebug
+
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: app/build/reports/lint-results-debug.html
+
+      - name: Assemble debug APK
+        run: gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: LogicaMate-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+
+      # El test instrumentado (MainActivitySmokeTest) requiere un
+      # emulador/dispositivo real y se deja como job manual opcional en vez
+      # de bloquear el build automático en cada push.
