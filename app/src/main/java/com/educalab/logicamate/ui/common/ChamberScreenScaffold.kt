@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,7 +42,7 @@ fun ChamberScreenScaffold(
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(modifier = Modifier.fillMaxSize().background(StoneDeep)) {
+    Column(modifier = Modifier.fillMaxSize().background(StoneDeep).navigationBarsPadding()) {
         ChamberTopBar(title = title, onBack = onBack)
 
         when {

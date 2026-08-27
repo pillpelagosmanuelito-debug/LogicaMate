@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -46,7 +47,7 @@ fun CollectionScreen(onBack: () -> Unit) {
         unlockedIds = db.collectibleDao().getUnlockedIds().toSet()
     }
 
-    Column(Modifier.fillMaxSize().background(StoneDeep)) {
+    Column(Modifier.fillMaxSize().background(StoneDeep).navigationBarsPadding()) {
         ChamberTopBar(title = "Tesoros de la Lógica", onBack = onBack)
         Text(
             "Cada tesoro se desbloquea completando cámaras del templo de verdad — nada aquí es decorativo.",

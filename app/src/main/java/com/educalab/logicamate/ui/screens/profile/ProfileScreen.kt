@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -112,7 +113,7 @@ fun ProfileScreen(onBack: () -> Unit) {
     val viewModel: ProfileViewModel = viewModel(factory = ProfileViewModel.Factory(context.applicationContext as Application))
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(Modifier.fillMaxSize().background(StoneDeep)) {
+    Column(Modifier.fillMaxSize().background(StoneDeep).navigationBarsPadding()) {
         ChamberTopBar(title = "Perfil del Explorador", onBack = onBack)
         Column(Modifier.padding(16.dp)) {
             androidx.compose.foundation.layout.Box(

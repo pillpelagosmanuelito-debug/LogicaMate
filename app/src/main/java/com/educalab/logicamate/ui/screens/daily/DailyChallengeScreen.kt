@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -102,7 +103,7 @@ fun DailyChallengeScreen(onBack: () -> Unit) {
     val viewModel: DailyViewModel = viewModel(factory = DailyViewModel.Factory(context.applicationContext as Application))
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(Modifier.fillMaxSize().background(StoneDeep)) {
+    Column(Modifier.fillMaxSize().background(StoneDeep).navigationBarsPadding()) {
         ChamberTopBar(title = "Reto Diario", onBack = onBack)
         when {
             state.isLoading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator(color = RuneGold) }

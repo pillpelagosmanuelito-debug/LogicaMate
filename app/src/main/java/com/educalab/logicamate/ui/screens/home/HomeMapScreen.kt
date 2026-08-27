@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -58,7 +60,7 @@ fun HomeMapScreen(onOpenChamber: (ChamberId) -> Unit, onOpenProfile: () -> Unit,
     val viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory(context.applicationContext as android.app.Application))
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(Modifier.fillMaxSize().background(StoneDeep)) {
+    Column(Modifier.fillMaxSize().background(StoneDeep).navigationBarsPadding()) {
         HeaderBar(state, onOpenProfile)
 
         if (state.isLoading) {
@@ -107,7 +109,7 @@ fun HomeMapScreen(onOpenChamber: (ChamberId) -> Unit, onOpenProfile: () -> Unit,
 @Composable
 private fun HeaderBar(state: HomeUiState, onOpenProfile: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().background(StoneMid).padding(horizontal = 16.dp, vertical = 12.dp),
+        Modifier.fillMaxWidth().background(StoneMid).statusBarsPadding().padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
