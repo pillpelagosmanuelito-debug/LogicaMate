@@ -271,12 +271,25 @@ def gen_sequence(difficulty, chamber="SEQUENCES", prefix="SEQ"):
     items = [piece(shape="NONE", value=v) for v in values] + [BLANK]
     rule_label = {"arithmetic": "suma siempre el mismo número", "geometric": "multiplica siempre por el mismo número",
                   "alternating": "alterna dos sumas distintas"}[kind]
+    # Banco de opciones numéricas: la respuesta correcta más distractores
+    # plausibles (repetir el último valor visible, sumar/restar el último
+    # salto, repetir el primer valor) — sin esto la UI (PieceCompletionBoard)
+    # no tiene nada que ofrecer para elegir, ver LogicaMatev1.1.1.
+    step_guess = values[-1] - values[-2]
+    raw_distractors = [values[-1], answer + step_guess, answer - step_guess, values[0], answer + 2 * step_guess]
+    distractors = []
+    for d in raw_distractors:
+        if d != answer and d not in distractors:
+            distractors.append(d)
+        if len(distractors) == 4:
+            break
+    option_values = distractors + [answer]
     return add_challenge(
         id=next_id(prefix), chamber=chamber, category="SEQUENCE", difficulty=difficulty,
         interaction="COMPLETE",
         prompt="Descubre la regla del pasadizo y completa la casilla que falta.",
         items=items,
-        option_pool=[],
+        option_pool=[piece(shape="NONE", value=v) for v in option_values],
         solution=[piece(shape="NONE", value=answer)],
         rule_type=f"SEQUENCE_{kind.upper()}", rule_params={},
         hints=make_hints(

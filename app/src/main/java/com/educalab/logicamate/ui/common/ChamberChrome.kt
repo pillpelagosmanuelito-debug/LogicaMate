@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,6 +40,7 @@ import com.educalab.logicamate.ui.theme.CrystalTeal
 import com.educalab.logicamate.ui.theme.EmberCoral
 import com.educalab.logicamate.ui.theme.MossGreen
 import com.educalab.logicamate.ui.theme.RuneGold
+import com.educalab.logicamate.ui.theme.StoneDeep
 import com.educalab.logicamate.ui.theme.StoneMid
 import com.educalab.logicamate.ui.theme.SurfaceCard
 import com.educalab.logicamate.ui.theme.SurfaceCardElevated
@@ -145,23 +148,34 @@ fun FeedbackBanner(kind: FeedbackKind?, message: String, onDismiss: () -> Unit, 
         modifier = modifier,
     ) {
         val color = if (kind == FeedbackKind.CORRECT) MossGreen else EmberCoral
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
                 .clip(RoundedCornerShape(16.dp))
                 .background(color.copy(alpha = 0.18f))
-                .padding(14.dp)
-                .clickable(onClick = onDismiss),
-            verticalAlignment = Alignment.CenterVertically,
+                .padding(14.dp),
         ) {
-            Text(
-                text = if (kind == FeedbackKind.CORRECT) "✓" else "✕",
-                color = color,
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(message, style = MaterialTheme.typography.bodyMedium, color = TextPrimary)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = if (kind == FeedbackKind.CORRECT) "✓" else "✕",
+                    color = color,
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(message, style = MaterialTheme.typography.bodyMedium, color = TextPrimary, modifier = Modifier.weight(1f))
+            }
+            // Botón explícito y grande para avanzar: tocar el aviso entero no era
+            // obvio ni cómodo (sección de feedback de usuarios, LogicaMatev1.1.1).
+            Button(
+                onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = StoneDeep),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
+            ) {
+                Text(if (kind == FeedbackKind.CORRECT) "Siguiente →" else "Entendido, reintentar")
+            }
         }
     }
 }
