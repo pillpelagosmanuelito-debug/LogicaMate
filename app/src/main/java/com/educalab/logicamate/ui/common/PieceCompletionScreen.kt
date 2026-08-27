@@ -3,6 +3,7 @@ package com.educalab.logicamate.ui.common
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -105,9 +106,21 @@ fun PieceCompletionBoard(
 
 @Composable
 private fun PassageOrMosaicRow(challenge: Challenge, selected: PieceSpec?) {
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        items(challenge.items) { piece ->
-            PieceView(piece = if (piece.isBlank && selected != null) selected else piece, boxSize = 52.dp)
+    val spacing = 8.dp
+    val itemCount = challenge.items.size
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // El mosaico completo (incluido el hueco "?") debe verse siempre a la vez,
+        // sin depender de que el niño deslice para descubrir dónde está el hueco:
+        // el tamaño de cada pieza se ajusta al ancho disponible en vez de ser fijo.
+        val pieceSize = if (itemCount > 0) {
+            ((maxWidth - spacing * (itemCount - 1)) / itemCount).coerceIn(24.dp, 52.dp)
+        } else {
+            52.dp
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(spacing), modifier = Modifier.fillMaxWidth()) {
+            challenge.items.forEach { piece ->
+                PieceView(piece = if (piece.isBlank && selected != null) selected else piece, boxSize = pieceSize)
+            }
         }
     }
 }
